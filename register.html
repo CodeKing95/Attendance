@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Mosque</title>
+</head>
+<body>
+    <h2>{{ 'Edit Mosque' if mosque_id else 'Register New Mosque' }}</h2>
+
+    <form method="POST">
+        <label for="mosque_name">Mosque Name:</label><br>
+        <input type="text" id="mosque_name" name="mosque_name" value="{{ mosque.name if mosque_id else '' }}" required><br><br>
+
+        <label for="population">Total Population:</label><br>
+        <input type="number" id="population" name="population" value="{{ mosque.total_population if mosque_id else '' }}" required><br><br>
+
+        <input type="hidden" name="mosque_id" value="{{ mosque.id if mosque_id else '' }}">
+
+        <button type="submit">{{ 'Update' if mosque_id else 'Register' }}</button>
+    </form>
+
+    <h3>Existing Mosques</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Total Population</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mosque in mosques %}
+                <tr>
+                    <td>{{ mosque.name }}</td>
+                    <td>{{ mosque.total_population }}</td>
+                    <td>
+                        <a href="{{ url_for('register', mosque_id=mosque.id) }}">Edit</a> |
+                        <form action="{{ url_for('delete_mosque', id=mosque.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this mosque?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

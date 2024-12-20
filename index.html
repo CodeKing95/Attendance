@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Submit Attendance</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/submit_attendance">
+        <label for="name">Your Name:</label>
+        <input type="text" name="name" required>
+
+        <label for="mosque_id">Select Mosque:</label>
+        <select name="mosque_id" required>
+            {% for mosque in mosques %}
+                <option value="{{ mosque.id }}">{{ mosque.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="fajr">Fajr:</label>
+        <input type="number" name="fajr" min="0" required>
+
+        <label for="dhuhr">Dhuhr:</label>
+        <input type="number" name="dhuhr" min="0" required>
+
+        <label for="asr">Asr:</label>
+        <input type="number" name="asr" min="0" required>
+
+        <label for="maghrib">Maghrib:</label>
+        <input type="number" name="maghrib" min="0" required>
+
+        <label for="isha">Isha:</label>
+        <input type="number" name="isha" min="0" required>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

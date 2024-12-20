@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <a href="/register">Register New Mosque</a> 
+    <a href="/download_report">Download PDF Report</a>
+
+    <h2>Attendance Records</h2>
+
+    {% for date, records in attendance_data.items() %}
+    <h3>Date: {{ date }}</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Mosque</th>
+                <th>Fajr</th>
+                <th>Dhuhr</th>
+                <th>Asr</th>
+                <th>Maghrib</th>
+                <th>Isha</th>
+                <th>Total (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.name }}</td>
+                <td>{{ record.mosque }}</td>
+                <td>{{ "%.2f" % record.fajr }}%</td>
+                <td>{{ "%.2f" % record.dhuhr }}%</td>
+                <td>{{ "%.2f" % record.asr }}%</td>
+                <td>{{ "%.2f" % record.maghrib }}%</td>
+                <td>{{ "%.2f" % record.isha }}%</td>
+                <td>{{ "%.2f" % record.total }}%</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th>Total</th>
+                <td></td>
+                <td>{{ "%.2f" % (records | map(attribute='fajr') | sum / (records|length)) }}%</td>
+                <td>{{ "%.2f" % (records | map(attribute='dhuhr') | sum / (records|length)) }}%</td>
+                <td>{{ "%.2f" % (records | map(attribute='asr') | sum / (records|length)) }}%</td>
+                <td>{{ "%.2f" % (records | map(attribute='maghrib') | sum / (records|length)) }}%</td>
+                <td>{{ "%.2f" % (records | map(attribute='isha') | sum / (records|length)) }}%</td>
+                <td>{{ "%.2f" % (records | map(attribute='total') | sum / (records|length)) }}%</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endfor %}
+</body>
+</html>
